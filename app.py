@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 import json
 import random
 
@@ -9,6 +12,7 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 games = {}
+
 
 @app.route('/game/<int:game_id>')
 def join_game(game_id):
@@ -84,5 +88,18 @@ def on_graph_select(payload):
     emit('GRAPH_UPDATE', graph, room=game_id)
     # emit('LOCATION_UPDATE', {'location': payload['location']})
 
+def game_updater():
+    while True:
+        for game_id, game in games.items():
+            game['countdown'] -= 1
+            socketio.emit('GAME_UPDATE', {
+                'id'       : game_id,
+                'countdown': game['countdown'],
+                'phase'    : game['phase'],
+            }, room=game_id)
+
+        eventlet.sleep(1)
+
 if __name__ == '__main__':
+    eventlet.spawn(game_updater)
     socketio.run(app, debug=True)
