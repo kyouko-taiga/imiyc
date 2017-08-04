@@ -6,16 +6,6 @@ import GameBoardComponent from './component'
 
 class GameBoardContainer extends React.Component {
 
-    componentDidMount() {
-        // this.gameTimer = setInterval(() => {
-        //     this.props.dispatch(updateGameCountdown(this.props.countdown - 1))
-        // }, 1000)
-    }
-
-    componentWillUnount() {
-        clearInterval(this.gameTimer)
-    }
-
     render() {
         return <GameBoardComponent {...this.props} {...this.state} />
     }
@@ -23,7 +13,11 @@ class GameBoardContainer extends React.Component {
 }
 
 function stateToProps(state) {
-    return { store: state }
+    return {
+        game  : state.game,
+        graph : state.graph,
+        player: state.player,
+    }
 }
 
 export default connect(stateToProps)(GameBoardContainer)

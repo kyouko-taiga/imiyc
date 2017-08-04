@@ -37,14 +37,6 @@ export function updateGraph(graph) {
     }
 }
 
-export function getLocation() {
-    return (dispatch, getState, socket) => {
-        socket.emit('LOCATION_GET', {
-            game_id : window.__gameId__,
-        })
-    }
-}
-
 export function postLocation(location) {
     return (dispatch, getState, socket) => {
         // Don't dispatch anything if the location didn't change.
@@ -52,21 +44,21 @@ export function postLocation(location) {
             return
         }
 
-        socket.emit('LOCATION_POST', {
+        socket.emit('PLAYER_LOCATION_POST', {
             game_id : window.__gameId__,
             location: location,
         })
 
         dispatch({
-            type   : actionTypes.LOCATION_POST,
+            type   : actionTypes.PLAYER_LOCATION_POST,
             payload: { location },
         })
     }
 }
 
-export function updateLocation(location) {
+export function updatePlayer(player) {
     return {
-        type   : actionTypes.LOCATION_UPDATE,
-        payload: { location },
+        type   : actionTypes.PLAYER_UPDATE,
+        payload: player,
     }
 }

@@ -23,15 +23,17 @@ export default class Graph extends React.Component {
             .force('link'   , d3.forceLink().id((d) => { return d.id }).distance(50))
             .force('charge' , d3.forceManyBody())
             .force('center' , d3.forceCenter(width / 2, height / 2))
-            .force('collide', d3.forceCollide().radius((d) => { return this.radius(d.population) * 1.75 }))
+            // .force('collide', d3.forceCollide().radius((d) => { return this.radius(d.population) * 1.75 }))
+            .force('collide', d3.forceCollide().radius(100))
 
         this.svg.append('g').attr('class', 'links')
         this.svg.append('g').attr('class', 'nodes')
     }
 
     componentWillReceiveProps(props) {
-        const graph = props.graph
-        const color = d3.scaleOrdinal(d3.schemeCategory20)
+        const graph  = props.graph
+        const player = props.player
+        const color  = d3.scaleOrdinal(d3.schemeCategory20)
 
         // Note that because D3-force's simulation mutates the nodes' data, we
         // can't simply pass the redux store's state to D3, so as to keep it
@@ -74,13 +76,26 @@ export default class Graph extends React.Component {
 
         node = this.svg.select('g.nodes').selectAll('g')
 
+        const totalPopulation = graph.nodes
+            .map((n) => { return n.population })
+            .reduce((acc, x) => { return acc + x }, 0)
+        const percent = (population) => {
+            return totalPopulation > 0
+                ? population * 100 / totalPopulation
+                : 0
+        }
+
         node.select('circle')
-            .attr('r', (d) => { return this.radius(d.population) })
+            .attr('r', (d) => { return percent(d.population) / 2 + 20 })
         node.select('text')
-            .text((d) => { return `${Math.round(this.percent(d.population) * 10) / 10}%` })
+            .text((d) => { return `${Math.round(percent(d.population) * 10) / 10}%` })
 
         node.classed('selected', false)
-        this.svg.select(`#_${graph.location}`).classed('selected', true)
+        node.each(function _(d) {
+            d3.select(this).classed('infected', d.status == 'infected')
+        })
+
+        this.svg.select(`#_${player.location}`).classed('selected', true)
 
         // Update the force simulation.
         this.simulation
@@ -89,16 +104,6 @@ export default class Graph extends React.Component {
 
         this.simulation.force('link')
             .links(linksData)
-    }
-
-    percent(population) {
-        return (this.props.graph.totalPopulation > 0)
-            ? population * 100 / this.props.graph.totalPopulation
-            : 0
-    }
-
-    radius(population) {
-        return this.percent(population) / 2 + 20
     }
 
     ticked() {

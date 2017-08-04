@@ -3,25 +3,37 @@ import deepcopy from 'deepcopy'
 import React from 'react'
 
 import * as gameActions from '../../actions/game'
+import Countdown from '../Countdown'
 import Graph from '../Graph'
 
 export default class GameBoard extends React.Component {
 
     render() {
-        const minutes = Math.floor(this.props.store.game.countdown / 60)
-        const seconds = this.props.store.game.countdown - 60 * minutes
-        const countdown = `${minutes}:${seconds}`
+        const statusIcon = this.props.player.status == 'healthy'
+            ? <img src="/static/icons/healthy.png" />
+            : <img src="/static/icons/infected.png" />
 
         return (
           <div className="container">
             <div className="row">
-              <div className="col-xs-12">
-                Infection starts in: {countdown}
+              <div className="x-hud">
+                <div className="col-sm-6">
+                  <div className="x-player-status">
+                    {statusIcon}
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <Countdown game={this.props.game} />
+                </div>
               </div>
             </div>
             <div className="row">
-              <div className="col-md-8 col-md-offset-2">
-                <Graph graph={this.props.store.graph} dispatch={this.props.dispatch} />
+              <div className="col-sm-12">
+                <Graph
+                  graph    = {this.props.graph}
+                  player   = {this.props.player}
+                  dispatch = {this.props.dispatch}
+                />
               </div>
             </div>
           </div>

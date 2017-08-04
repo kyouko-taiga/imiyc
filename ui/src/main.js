@@ -35,8 +35,8 @@ socket.on(actionTypes.GRAPH_UPDATE, (payload) => {
     store.dispatch(gameActions.updateGraph(payload))
 })
 
-socket.on(actionTypes.LOCATION_UPDATE, (payload) => {
-    store.dispatch(gameActions.updateLocation(payload.location))
+socket.on(actionTypes.PLAYER_UPDATE, (payload) => {
+    store.dispatch(gameActions.updatePlayer(payload))
 })
 
 // ---------------------------------------------------------------------------

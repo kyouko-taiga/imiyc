@@ -1,42 +1,68 @@
+@font-face {
+    font-family : "LCD Mono";
+    src         : url(./fonts/lcdmn.ttf) format("truetype");
+}
+
+body {
+    margin-top  : 1em;
+}
+
 #graph {
-    width     : 100%;
-    height    : 500px;
-    border    : 1px solid #333;
+    width       : 100%;
+    height      : 500px;
 }
 
 .links line {
-  stroke      : rgb(224, 220, 191);
+  stroke        : rgb(218, 218, 218);
 }
 
 .nodes {
-  cursor      : pointer;
+  cursor        : pointer;
 }
 
 .nodes circle {
-  fill        : rgb(255, 248, 220);
-  stroke      : rgb(224, 220, 191);
-  stroke-width: 3px;
+  fill          : rgb(255, 248, 220);
+  stroke        : rgb(224, 220, 191);
+  stroke-width  : 3px;
 }
 
 .nodes .selected circle {
-  fill        : rgb(94 , 68 , 31);
-  stroke      : rgb(93 , 64 , 21);
+  fill          : rgb(94 , 68 , 31 );
+  stroke        : rgb(93 , 64 , 21 );
 }
 
 .nodes .infected circle {
-  fill        : rgb(244, 222, 222);
-  stroke      : rgb(235, 204, 209);
+  fill          : rgb(244, 222, 222);
+  stroke        : rgb(235, 204, 209);
 }
 
 .nodes .selected.infected circle {
-  fill        : rgb(85 , 33 , 31);
-  stroke      : rgb(83 , 25 , 23);
+  fill          : rgb(217, 83 , 79 );
+  stroke        : rgb(212, 63 , 58 );
 }
 
 .nodes text {
-  font-family : monospace;
+  font-family   : monospace;
 }
 
 .nodes .selected text {
-  fill        : white;
+  fill          : white;
+}
+
+.x-hud .x-player-status img {
+  width         : 64px;
+  height        : 64px;
+}
+
+.x-hud .x-countdown {
+  text-align    : right;
+}
+
+.x-hud .x-countdown small {
+  display       : block;
+}
+
+.x-hud .x-countdown span {
+  font-family   : "LCD Mono";
+  font-size     : 34px;
 }

@@ -1,9 +1,11 @@
 import { GAME_UPDATE } from '../actions/types'
 
 const initialState = {
-    id       : window.__gameId__,
-    countdown: 0,
-    phase    : 0,
+    id               : window.__gameId__,
+    started_at       : 0,
+    healthy_duration : 0,
+    infected_duration: 0,
+    status           : 'healthy'
 }
 
 export default (state = initialState, action) => {
@@ -11,9 +13,7 @@ export default (state = initialState, action) => {
         case GAME_UPDATE:
             return {
                 ...state,
-                id       : action.payload.id,
-                countdown: action.payload.countdown,
-                phase    : action.payload.phase,
+                ...action.payload,
             }
 
         default:
